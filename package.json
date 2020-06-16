@@ -1,0 +1,36 @@
+{
+    "name": "nodejs-chatter",
+    "version": "1.0.0",
+    "description": "Real-Time Web Chat with Node.js and Socket.IO",
+    "main": "index.js",
+    "babel": {
+        "presets": [
+            "env"
+        ]
+    },
+    "scripts": {
+        "babel-node": "babel-node --presets=env",
+        "start": "nodemon --exec npm run babel-node -- ./src/index.js",
+        "build": "babel src -d dist",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/GrafSoul/nodejs-chatter.git"
+    },
+    "author": "Dmitriy Zatulovskiy",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/GrafSoul/nodejs-chatter/issues"
+    },
+    "homepage": "https://github.com/GrafSoul/nodejs-chatter#readme",
+    "dependencies": {
+        "nodemon": "^2.0.4",
+        "express": "^4.17.1",
+        "socket.io": "^2.3.0"
+    },
+    "devDependencies": {
+        "babel-cli": "^6.26.0",
+        "babel-preset-env": "^1.7.0"
+    }
+}
