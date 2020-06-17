@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Chatter</title>
+    <title>Chatter - Room: Swift</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="apple-touch-icon-precomposed" sizes="57x57" href="images/apple-touch-icon-57x57.png" />
@@ -18,25 +18,49 @@
     <meta name="msapplication-TileImage" content="images/mstile-144x144.png" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
         integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <style>
+        form {
+            padding: 20px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            padding-right: 50px;
+        }
+
+        #messages {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+        }
+
+        #messages li {
+            padding: 5px 10px;
+        }
+
+        #messages li:nth-child(odd) {
+            background: #eee;
+        }
+    </style>
 </head>
 
 <body>
-    <div class="jumbotron jumbotron-fluid">
-        <div class="container">
-            <h1 class="display-3">
-                <img src="" alt="">
-                Tech Chatter
-            </h1>
-            <p class="lead">Select which room you'd like to join below!!!</p>
-        </div>
-    </div>
     <div class="container-fluid">
         <div class="row">
-            <ul class="list-group col">
-                <a href="/javascript" class="list-group-item">Javascript</a>
-                <a href="/swift" class="list-group-item">Swift</a>
-                <a href="/css" class="list-group-item">CSS</a>
-            </ul>
+            <ul id="messages"></ul>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <form action="">
+                    <div class="input-group">
+                        <input id="m" autocomplete="off" type="text" class="form-control" placeholder="Message..."
+                            aria-label="Message...">
+                        <span class="input-group-btn ml-3">
+                            <button class="btn btn-success" type="submit">Send</button>
+                        </span>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
@@ -47,6 +71,31 @@
     </script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
         integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous">
+    </script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        let name = prompt('What\'s your name?');
+        const room = 'swift';
+        const socket = io('/tech');
+        $('form').submit(() => {
+            let msg = name + ": " + $('#m').val();
+            socket.emit('message', {
+                msg,
+                room
+            });
+            $('#m').val('');
+            return false;
+        });
+
+        socket.on('connect', () => {
+            socket.emit('join', {
+                room: room
+            });
+        })
+
+        socket.on('message', (msg) => {
+            $('#messages').append($('<li>').text(msg));
+        })
     </script>
 </body>
 
